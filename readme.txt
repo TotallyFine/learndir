@@ -1,1 +1,1 @@
-git 是一个免费的版本控制系统
+git is a free software
