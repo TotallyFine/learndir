@@ -1,0 +1,14 @@
+source 就是不需要重启就可以直接绑定一些文件的信息 source filaname
+exit 推出终端
+vim 打开vim编辑器
+jupyter notebook 而不是 ipython notebook
+
+sudo dpkg -i packge.deb  到deb包所在的位置，安装下载的deb包，packge为下载的包的名称
+sudo dpkg -r packge.deb 卸载名为packge的软件 与上面的名字不同
+sudo apt-get install -f 修复并自动安装所需要的依赖，当从deb包安装时可能有一些依赖没有安装此时程序不能正常运行，当出现这种情况的时候，运行此命令并再次	
+	使用sudo dpkg -i packge.deb安装
+
+poweroff 立刻关机
+reboot 重启
+shutdown 安全关机
+运行.sh 文件http://blog.sina.com.cn/s/blog_54f82cc201010hfz.html

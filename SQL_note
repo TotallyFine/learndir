@@ -1,0 +1,108 @@
+#####创建数据库
+CREATE DATABASE <databasename>;
+
+#####删除数据库
+DROP DATABASE <database name>; 直接删除数据库文件
+DROP TABLE <TABLE NAME>;
+
+#####创建表
+CREATE TABLE <tablename>(
+<List name>    <Variable class>    [constraint],
+<List name>    <Variable class>    [constraint],
+...
+);
+[]代表选填
+
+CREATE TABLE STUDENT(
+StudentID      char(12)    PRIMARY KEY,
+StudentName    varchar(20) NOT NULL, 
+StudentGender  char(2)     NULL,
+BirthDay       date        NULL,
+Majorvar       char(30)    NULL,
+StudentPhone   char(11)    NULL
+);
+
+CREATE TABLE COURSE(
+CourseID      char(4)      PRIMARY KEY,
+CourseName    varchar(20)  NOT NULL UNIQUE,
+CourseType    varchar(10)  NULL CHECK(CourseType IN('基础课', '专业课', '选修课')),
+CourseCredit  smallint     NULL,
+CoursePeriod  smallint     NULL,
+TestMethod    char(4)      NOT NULL DEFAULT'考试'
+);
+UNIQOE可以确定此列的数据唯一，CHECK(<List name> IN ([,<值>])) 来检查是否是符合要求的那几个值中的一个
+DEFAULT<值> 来指定默认的值，这些都属于列约束，下面将展示表约束
+
+CREATA TABLE CPLAN(
+CourseID      char(4)      NOT NULL,
+TeacherID     char(4)      NOT NULL,
+CourseRoom    varchar(30),
+CONSTRAINT    CoursePlan_PK    PRIMARY KEY(CourseID, TeacherID),
+CONSTRAINT    CourserPlan_FK   FOREIGN KEY(CourseID)
+              REFRENCE         COURSE(CourseID)
+              ON               UPDATE CASCADE[NO ACTION 不级联更新]
+              ON               DELETE CASCADE[NO ACTION 不级联更新]          
+);
+通过CONSTRAINT命令来指定表约束，如果要将多个列作为主键则使用如上方法。指定级联更新与级联删除如上所示。
+
+CTEATE TABLE A(
+LIST1   Int    NOT NULL IDENTITY(1,1)
+);
+在此例中使用了代理建，由DBMS自动生成。
+
+#####数据库表修改
+ALTER TABLE <table name> [改变方式];
+ALTER TABLE STUDENT ADD Email varchar(20); 增加列
+ALTER TABLE STUDENT ADD Class_FK FORIEIGN KEY(ClassID);增加约束
+ALTER TABLE STUDENT DROP COLUMN Email;删除列
+ALTER TABLE STUDENT DROP Class_FK;删除约束
+ALTER TABLE <TABLE NAME> CHANGE <LIST NAME> TO <NAME> <数据类型>;
+ALTER TABLE <TABLE NAME> MODIFY <LIST NAME> <新的数据类型>;
+
+#####数据索引对象
+CREATE INDEX Index_name ON TABLE(COLUME); 定义索引
+CREATE INDEX Birthdaty_Idx ON STUDENT(Birthday);
+ALTER INDEX Birthday_Idx ON Student RENAME TO Bday_Idx; 修改索引名称
+ALTER INDEX Birthday_Idx CLUSTERED|NONCLUSTERED;改变索引的聚簇性质，聚簇性质可以帮助经常进行查询的索引更快的查找，一个表中只有一个聚簇索引，多个非聚簇
+DROP INDEX Birthdat_Idx; 删除索引
+
+#####数据插入、更新、删除
+INSERT INTO <基本表>[<列名表>] VALUES(列值表);
+INSERT INTO STUDENT VALUES('2016220203011', 'jipuzhao', '1998-09-24', ...);
+
+UPDATE <基本表> 
+SET <列名1>=<表达式1>[,<列名2>=<表达式2>...]
+[WHERE <条件表达式>];
+UPDATE STUDENT SET Email='aaa@163.com' WHERE StudentName='sb';
+
+DELETE FROM <表名> WHERE <条件表达式>;
+DELETE FROM STUDENT WHERE StudentName='sb';如果没有WHERE子句，则会把所有的记录删除
+
+#####数据查询
+SELECT * FROM STUDENT;
+SELECT StudentID, StudentName,Major FROM STUDENT;
+SELECT DISTINCT Major FROM STUDENT; 使用DISTINCT来过滤查询结果的重复元组。
+SELECT * FROM STUDENT WHERE Major='software' AND StudentGender='male';
+SELECT * FROM STUDENT WHERE Birthday BETWEEN '1995-04-01' AND '1996-04-01'; 两种选择区间的方法
+SELECT * FROM STUDENT WHERE Birthday >='1995-04-01' AND Birthday <= '1996-04-01';
+SELECT * FROM STUDENT WHERE StudentName LIKE '刘_'; _为通配符，只匹配一个字
+SELECT * FROM STUDENT WHERE Email LIKE '%@163.com'; %也为通配符，一次匹配多个字符
+SELECT * FROM STUDENT WHERE Email NOt LIKE '%@163.com';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+
+在ipython中以%开头的都是魔法命令
+%magic可以查看各种命令的使用方法
+
+
+%matplotlib inline 将matplotlib所画的图形内置到notebook中，其必须有一个图形界面，如果是直接在交互界面中的话就不能有这样的写法

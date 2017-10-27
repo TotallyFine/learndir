@@ -1,0 +1,92 @@
+##########python 文件读写
+with open('/path/file...', 'r') as f:
+	print(f.read())
+在这段代码中集成了f = open('/path/file...', 'r') 所以可以用f.raed()
+并且相当于 try:
+	f = open('/path/file...', 'r')
+	print(f.read())
+     finally:
+	if f:#判断f是否打开如果打开就将其关闭不占用资源
+	     f.close()
+如果文件很大的话可以么此只读取一定的size f.read(size)
+如果是配置文件的话可以每次只读一行 f.readlines()
+写文件与读文件相同
+编码问题 f = open('/path/file...', 'r', encoding='gbk')
+如果文本中夹杂了一些非法的字符可以 f = open('/path/file...', 'r', encoding='gbk', errors='ignore')
+
+##########python csv文件读写
+一个简单的例子
+import csv
+with open('some.csv', 'rb') as f:
+	reader = csv.reader(f)
+	for row in reader:
+		#do something
+
+with write('some.csv', 'wb') as f:
+	writer = csv.writer(f)
+	#do something
+
+csv接收一个文件对象或者一个list对象，并包装它。在读取csv文件的时候是以行为单位读取的
+返回的reader是一个list元素为每一行，其中每行也是一个list元素为每个以逗号或者其他分隔符分割的元素
+注意如果读取文件的方式是rb则不能读取文本格式的csv，可以使用rt来读取文本或者csv模块默认的r就是读取文本
+
+############matplotlib使用
+python可视化库matplotlib有两种显示方式，
+1.阻塞模式 block
+2.交互模式 interactive
+在命令行中是阻塞模式，而在python脚本中则是阻塞模式
+
+交互模式：
+plt.plot(x)或plt.imshow(x)是直接出图像，不需要plt.show()
+在脚本中可以使用plt.ion()开启交互模式，但如果没有使用plt.ioff()关闭的话，图像会一闪而过，防止这种情况需要在plt.show()之前加上plt.ioff()
+
+阻塞模式：
+打开一个窗口之后必须关掉才能打开下一个新窗口。所以不能一次打开多个窗口进行比较。
+plt.plot(x)或者plt.imshow(x)不是直接出图像，絮语奥plt.show()才能出图像
+
+解决办法：
+    import matplotlib.pyplot as plt
+    plt.ion()    # 打开交互模式
+    # 同时打开两个窗口显示图片
+    plt.figure()
+    plt.imshow(i1)
+    plt.figure()
+    plt.imshow(i2)
+    # 显示前关掉交互模式
+    plt.ioff()
+    plt.show()
+
+#############迭代
+迭代器为允许程序员迭代非序列类型，包括用户定义的对象。可以处理不是序列但表现的像序列行为的对象，例如字典的键，一个文件的行。
+i = iter('abcd')
+print(t.next())
+
+或者使用enumerate()来添加索引进行迭代,enumerate本意为枚举，列举的意思
+对于一个可以迭代的对象,enumerate()将其组成一个索引序列，可以同时获得索引和值，多用于在for循环中得到计数
+list1 = ['a', 'b', 'c', 'd']
+for i in enumerate(list1, 0):
+    print(i)
+'''
+(0, 'a')
+(1, 'b')
+(2, 'c')
+(3, 'd')
+'''
+或者这样使用
+for index, value in enumerate(list1, 1):
+    print(index, value)
+enumerate()的第二个参数为索引开始的值
+
+##############命令行参数解析
+http://www.jb51.net/article/67158.htm
+
+
+
+
+
+
+
+
+
+
+
