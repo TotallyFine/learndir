@@ -1,6 +1,6 @@
 ctrl+～ 打开控制台
 
-
+分屏 alt+shift+数字 分成几个屏幕
 
 如果是想在sublime里要python shell那种交互或者run module F5 F5 F5下这种效果的话，还是挺容易实现的，windows下的：
 1. 打开Sublime text 3 安装package controlSublime Text 3 安装Package Control
