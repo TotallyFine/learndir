@@ -45,3 +45,10 @@ PATH命令
    在anaconda navigator中无法查找到SimpleITK，还有一些包也无法在界面中查找到所以先登录anaconda.org 搜索SimpleITK，进入页面有相关的安装方式
    安装的时候注意安装到相应的环境中，conda install -n <env> -n simpleitk simpleitk
    然后import SimpleITK来进行检查
+   
+   
+提示/boot空间不足的解决方法
+    通过dpkg --get-selections |grep linux-image查看已经安装的各个版本
+    uname -sr查看本机正在使用的版本
+    sudo apt-get purge linux-image-4.10.0-37-generic 删除不用的内核
+    也可以自动使用sudo apt autoremove --purge来删除那些系统不再需要的内核和软件包
