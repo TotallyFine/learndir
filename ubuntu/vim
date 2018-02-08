@@ -1,0 +1,13 @@
+帮助乌干达的可怜儿童！
+网址：coolshell.cn/articles/5426.html
+使用vim命令刚进入的时候是正常模式，Normal，
+i---进入插入模式可以进行编辑
+esc---退出当前模式
+x---Normal模式下删除当前光标所在的字符
+:q---在Normal下直接输入:q按下回车退出不保存
+:wq---Normal下保存+退出
+dd---Normal下剪切当前行
+p---粘帖
+hjkl---Normal下左下上右移动光标
+:help <command>---Normal下显示命令的帮助
+:w---只保存不退出

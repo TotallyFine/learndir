@@ -1,0 +1,47 @@
+### frp的作用
+ - 利用处于内网或防火墙后的机器，对外网提供http或https服务
+ - 对于http、https服务支持基于域名的虚拟主机，支持自定义域名绑定，使多个域名可以共用一个80端口
+ - 利用处于内网或防火墙后的机器，对外网提供tcp和udp服务，例如在其他地方通过ssh访问处于一个内网的主机
+
+### 开发状态
+ - frp仍然处于开发阶段，不推荐用于生产环境
+ - master用于发布稳定版本，dev用于开发
+
+### 配置前准备
+ - 公网服务器一台
+ - 内网服务器一台 用于被访问
+ - 公网服务器绑定域名一个，实现通过ssh访问内网机器不需要域名，实现内网机器提供服务需要域名
+ - 内网服务器部署一个web服务，这是为了实现提供http等服务，如果只需要实现ssh也可以不部署
+
+### 安装frp
+ - 公网服务器与内网服务器都需要下载frp进行安装
+ - 下载地址是github.com/fatedier/frp/releases,下载对应机器的版本
+ - 新建目录mkdir -p /uer/local/frp 也可以建在主目录下， -p命令表示一次创建多级目录，将对应版本的frp压缩包在此文件下解压
+ - 进入解压的目录 cd frp_0.13.0_linux_386,这里要关注4个文件，分别是frpc、frpc.ini、frps、frps.ini，前两个是客户端(内网服务器)所关注的文件，后两个是服务器端(公网服务器)所关注的文件
+
+### 配置公网服务器、内网服务器
+ - 公网服务器，首先删掉frpc、frpc.ini两个文件再进行配置，vim frps.ini
+   - [common]
+   - bind_port = 7000 #与客户端(内网服务器)绑定的进行通信的端口
+   - vhost_http_port = 6081 #访问客户端web服务自定义的端口号
+   - 保存然后在该目录下启动服务 ./frps -c ./frps.ini这是前台启动弹出一个终端，后台启动为 nohup frps -c frps.ini &
+ - 内网服务器，首先删掉frps、frps.ini两个文件，然后进行配置，vim frpc.ini
+   - [common]
+   - server_addr = ip_addr #公网服务器IP
+   - server_port = 7000    #与服务器端(内网机器)bind_port一致
+   - 
+   - #公网通过ssh访问内部服务器
+   - [ssh]
+   - type = tcp #连接协议
+   - local_ip = 192.168.0.102 #内网服务器的ip
+   - local_port = 22 #ssh默认端口号
+   - remote_port = 6000 #自定义的访问内部ssh端口号
+   - 
+   - #公网访问内部web服务器以http方式
+   - [web]
+   - type = http #访问协议
+   - local_type = 8081 #内网web服务器的端口号
+   - custom_domains = repo.iwi.com #所绑定的公网服务器域名，一级、二级都可以
+   - 保存然后执行 #内网web服务器的端口号
+   - custom_domains = repo.iwi.com #所绑定的公网服务器域名，一级、二级都可以
+   - 保存然后执行./frpc -c ./frpc.ini前台启动，后台启动的过程见前面
