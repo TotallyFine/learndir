@@ -24,12 +24,13 @@
    - [common]
    - bind_port = 7000 #与客户端(内网服务器)绑定的进行通信的端口
    - vhost_http_port = 6081 #访问客户端web服务自定义的端口号
+   - auto_token = xxx # 自定义auto_token
    - 保存然后在该目录下启动服务 ./frps -c ./frps.ini这是前台启动弹出一个终端，后台启动为 nohup frps -c frps.ini &
  - 内网服务器，首先删掉frps、frps.ini两个文件，然后进行配置，vim frpc.ini
    - [common]
    - server_addr = ip_addr #公网服务器IP
-   - server_port = 7000    #与服务器端(内网机器)bind_port一致
-   - 
+   - server_port = 7000    #与服务器端(公网机器)bind_port一致
+   - auto_token = xxx # 与公网服务器的一致，除了这里的auto_token要和服务器的frps.ini保持一致之外，frpc_full.ini中的privilege_token也要和服务器中的frps_full.ini中的保持一致
    - #公网通过ssh访问内部服务器
    - [ssh]
    - type = tcp #连接协议

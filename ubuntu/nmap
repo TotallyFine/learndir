@@ -1,0 +1,44 @@
+https://www.cnblogs.com/st-leslie/p/5115280.html
+使用nmap进行1. 主机发现 2. 端口扫描 3. 版本侦测 4. 操作系统侦测
+```shell
+nmap -F -sT -v nmap.org
+```
+-F 快速扫描，扫描100个最有可能开放的端口 -v获取扫描的信息 -sT采用TCP扫描，默认的就是TCP扫描所以不写也可以。
+```shell
+Starting Nmap 7.01 ( https://nmap.org ) at 2018-03-14 17:38 CST
+Initiating Ping Scan at 17:38
+Scanning nmap.org (45.33.49.119) [2 ports]
+Completed Ping Scan at 17:38, 0.27s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 17:38
+Completed Parallel DNS resolution of 1 host. at 17:38, 0.00s elapsed
+Initiating Connect Scan at 17:38
+Scanning nmap.org (45.33.49.119) [100 ports]
+Discovered open port 443/tcp on 45.33.49.119
+Discovered open port 25/tcp on 45.33.49.119
+Discovered open port 22/tcp on 45.33.49.119
+Discovered open port 80/tcp on 45.33.49.119
+Completed Connect Scan at 17:38, 5.11s elapsed (100 total ports)
+Nmap scan report for nmap.org (45.33.49.119)
+Host is up (0.28s latency).
+Other addresses for nmap.org (not scanned): 2600:3c01::f03c:91ff:fe98:ff4e
+rDNS record for 45.33.49.119: ack.nmap.org
+Not shown: 95 filtered ports
+PORT    STATE  SERVICE
+22/tcp  open   ssh
+25/tcp  open   smtp
+80/tcp  open   http
+113/tcp closed ident
+443/tcp open   https
+
+Read data files from: /usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 5.43 seconds
+```
+对URL解析花了0秒，这个可能是因为之前扫描过，一般来说这个时间比较长，这个时间是可以优化的。总的运行时间是5.43秒。
+Not shown: 95 filtered ports表示96个端口被屏蔽了，也就是说明防火墙是开着的。一般端口有一下几个状态:
+状态        说明
+open        端口开启，数据有达到主机，有程序在端口上监控
+closed      端口关闭，数据有到达主机，没有程序在端口上监控
+filtered    数据没有到达主机，返回的结果为空，数据被防火墙或者是IDS过滤了
+Unfiltered  数据有达到主机，但是不能识别端口当前的状态
+Open|Filtered 端口没有返回值，主要发生在UDP、IP、FIN、NULL、Xmas扫描中
+closed|Filtered 只发生在IP ID idle扫描
