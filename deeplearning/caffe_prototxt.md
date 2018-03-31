@@ -98,3 +98,103 @@ layer{
 **pad**
 
 填充边缘的大小
+
+**weight_filter**
+
+权重的初始化，若设置为constant，则默认为0.也可使用"xavier"或"gaussian"
+
+**bias_filter**
+
+偏置项的初始化，与weight filter相似
+
+**bias_term**
+
+是否开启偏置项
+
+**group**
+
+分组，默认为1组。如果大于1，则将限制卷积的连接操作在一个子集内，如果根据图像的通道来进行分组，那么第i个输出分组只能与第i个输入分组进行连接
+
+(2) 层类型 pooling
+```.prototxt
+layer{
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+```
+
+(3) 激活层
+```.prototxt
+layer{
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+```
+
+(4) 全连接层
+```.protoxtxt
+layer{
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+```
+
+(5) accuracy 只有测试阶段才有
+```.prototxt
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+```
+
+(6) Reshape层 改变形状
+```.prorotxt
+layer {
+  name: "reshape"
+  type: "Reshape"
+  bottom: "input"
+  top: "output"
+  reshape_param {
+    shape {
+      dim: 0 # 表示维度不变，即输入和输出是相同的维度
+      dim: 2 # 将原来的维度变为2
+      dim: 3 # 将原来的维度变为3
+      dim: -1 # infer it from the other dimension
+    }
+  }
+}
+```
+
+blob是一个四维的数组n, c, w, h
