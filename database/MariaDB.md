@@ -14,6 +14,8 @@ sudo systemctl start mariadb #启动服务
 sudo systemctl enable mariadb #开机启动
 sudo systemctl status mariadb
 sudo systemctl restart mariadb # 重启
+sudo service mysql stop # 停止服务
+sudo /etc/init.d/mysqld stop # 停止服务
 ```
 运行下面的脚本来保护数据库:
  - 设置root密码
@@ -55,6 +57,21 @@ grant all privileges on *.* to username@'%' identified by 'passwd' with grant op
 
 ```SQL
 CREATE DATABASE BooksDB;
+```
+
+### Python连接
+Python连接MySQL和MariaDB需要MySQLdb模块:
+```shell
+pip install mysql-python
+```
+但是会提示mysql\_config not find的错误,是因为mysql-config相对于mysql-server/mariadb-server是另一个不同的package
+```shell
+sudo apt-get install libmysqlclient-dev #如果是mysql
+sudo apt-get install libmariadbclient-dev #如果是mariadb
+```
+再执行:
+```shell
+pip install mysql-python
 ```
 
 ### 参考
