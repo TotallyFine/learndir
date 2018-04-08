@@ -1,6 +1,7 @@
-## NLTK 
+## PREPROCESS
+stop words and puncations filtering, lowercase and lemmatzation.
 
-### Install
+### Installation
 In your bash:
 ```shell
 pip install nltk
