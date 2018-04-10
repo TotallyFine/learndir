@@ -55,7 +55,7 @@ int main(){
   printf("begin create thread");
 	//create philosphers thread
 	//pthread_create(*pthread_t t, )function's arg must be void*
-	for(i=0;i<5;i++) pthread_create(&philos[i], NULL, eat_think, &i);
+	for(i=0;i<5;i++) pthread_create(&philos[i], NULL, eat_think, (void*)&i);
 	printf("begin join");
 	// pthread_join(pthread_t t, **arg)
 	for(i=0;i<5;i++) pthread_join(philos[i], NULL);

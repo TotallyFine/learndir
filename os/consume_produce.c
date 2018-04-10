@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<pthread.h>
 #include<semaphore.h>
+#include<stdlib.h>
 
 #define N 10 //缓冲区大小
 #define PN 5 //生产者个数
@@ -15,10 +16,10 @@ sem_t empty;//empty信号量
 sem_t full;//full信号量
 pthread_mutex_t mutex;//临界区锁
 
-void produce(void* arg);
-void consume(void* arg);
+void* produce(void* arg);
+void* consume(void* arg);
 
-void produce(void* arg){
+void* produce(void* arg){
   while(1){
 	  sleep(1);//produce nextp
 		sem_wait(&empty);
@@ -32,7 +33,7 @@ void produce(void* arg){
 	}
 }
 
-void consume(void* arg){
+void* consume(void* arg){
   while(1){
 	  int nextp;
 		sem_wait(&full);
@@ -41,7 +42,7 @@ void consume(void* arg){
 		nextp = buffer[out];
 		out = (out + 1)%N;
     pthread_mutex_unlock(&mutex);
-		sem_lock(&empty);
+		sem_post(&empty);
 
 		sleep(2);//consume
 	}
@@ -63,14 +64,14 @@ int main(){
 	}
 
 	for(i=0;i<PN;i++){
-	  if(pthread_create(&producer[i], NULL, produce, (void*)i) != 0){
+	  if(pthread_create(&producer[i], NULL, produce, (void*)&i) != 0){
 		  printf("create producer error\n");
 			exit(0);
 		}
 	}
 
 	for(i=0;i<CN;i++){
-	  if(pthread_create(&consumer[i], NULL, consume, (void*)i) != 0){
+	  if(pthread_create(&consumer[i], NULL, consume, (void*)&i) != 0){
 		  printf("create consumer error\n");
 			exit(0);
 		}
