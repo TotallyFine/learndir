@@ -1,7 +1,10 @@
 ## WebApp
-A Simple WebApp framework.Support python3.
+Computer networking homework, write a http server without framework and parse HTTP packet by yourself.
 
-To use this framework:
+Support Python3.
+
+### Usage
+To use this homework as a simple framework:
 1. put your html at ./html/
 2. write route function in ./util/route.py
 3. change route\_dict in ./util/route.py
