@@ -1,2 +1,3 @@
 *.pkl
 *.out
+__pycache__/
