@@ -27,6 +27,7 @@ void* produce(void* arg){
 
 		buffer[in] = 1;
 		in = (in + 1)%N;
+    printf("produce product and put it at %d position\n", in);
 
 		pthread_mutex_unlock(&mutex);
 		sem_post(&full);
@@ -41,6 +42,8 @@ void* consume(void* arg){
 
 		nextp = buffer[out];
 		out = (out + 1)%N;
+    printf("consume product at %d position\n", out);
+
     pthread_mutex_unlock(&mutex);
 		sem_post(&empty);
 
