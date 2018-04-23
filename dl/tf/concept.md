@@ -61,8 +61,55 @@ with tf.Session() as sess:
 		print(result2)
 ```
 
+### Constant types
+能够通过tf.constant(value, dtype=None, shape=None, name='Const', verify\_shape=False)创造一个常数。
+```python
+a = tf.constant([2, 2], name='a')
+b = tf.constant([[0, 1], [2, 3]], name='b')
+x = tf.multiply(a, b, name='dot_production')
+with tf.Session() as sess:
+    print(sess.run(x))
+
+# 类似于numpy
+tf.zeros(shape, dtype=tf.float32, name=None)
+tf.zeros_like(input_tensor, dtype=None, name=None, optimize=True)
+tf.ones(shape, dtype=tf.float32, name=None)
+tf.ones_like(input_tensor, dtype=None, name=None, optimize=True)
+tf.fill(dims, values, name=None)
+
+# 也有和numpy类似的序列创建
+tf.linspace(start, stop, num, name=None)
+tf.range(start, limit=None, delta=1, dtype=None, name='range')
+# 但是这个序列并不能迭代
+for _ in tf.range(4) # error
+
+# 而且tf和numpy的数据类型可以通用，也就是说
+tf.ones([2, 2], np.float32)
+
+# 最好不要用python自带的数据类型，同时使用numpy的时候也要小心，因为未来tf的数据类型和numpy不再兼容
+```
+
 ### Variable
 Variable是神经网络的参数，必须经过tf.global_variables_initalizer()。但是输入神经网络的数据可以是ndarray，这点不同于pytorch。
+
+```python
+# 变量的赋值
+a = tf.Variable(2, name='sclar')
+b = tf.Variable([2, 3], name='vector')
+c = tf.Variable([[0, 1], [2, 3]], name='matrix')
+w = tf.Variable(tf.zeros([784, 10]), name='weight')
+```
+
+```python
+# 变量的操作
+x = tf.Variable()
+x.initializer # 初始化
+x.eval() # 读取里面的值
+x.assign() # 分配值给这个变量
+```
+尽量不要使用lazy loading，sess.run(tf.add(x, y))这样就是lazy loading，因为每次计算的时候要重新建立一个计算结点
+但是如果z = tf.add(x, y) sess.run(z)这样只会创建一个结点
+
 ```python
 import tensorflow as tf
 
@@ -90,6 +137,11 @@ with tf.Session() as sess:
 
 ### Placeholder
 placeholder是tf中的占位符，暂时储存变量。tf如果想要从外部传入data，那就需要用到tf.placeholder(),然后sess.run(\*\*\*, feed\_dict={input:\*\*})
+```python
+tf.placeholder(dtype, shape=None, name=None)
+# dtype是必须指定的参数，shape如果是None说明任何大小的tensor都能接受，shape=None很容易定义图，但是不容易debug，所以最好指定shape
+```
+
 ```python
 import tensorflow as tf
 
