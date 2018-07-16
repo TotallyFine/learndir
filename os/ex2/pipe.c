@@ -22,7 +22,7 @@
 int main(){
   int n;
 	int filedes[2];
-	pid_t pid;
+	pid_t pid1,pid2;
 	char data[MAXLEN];
 
 	if(pipe(filedes) < 0){
@@ -30,24 +30,38 @@ int main(){
 		exit(0);
 	}
 
-	if((pid = fork()) < 0){
+	if((pid1 = fork()) < 0){
 	  printf("fork error\n");
 		exit(1);
 	}
 
-	if(pid == 0){
+	if(pid1 == 0){
 	  // 子进程
-		strcpy(data, "hello, world!");
+		printf("Child Process 1 begin.\nPut in Pipe: Child Process 1 is sending a message!\n");
+		strcpy(data, "Child Process 1 is sending a message!\n");
 	  close(filedes[0]); // 关闭读端
   	write(filedes[1], data, strlen(data));
-		printf("child pid %d, put in pipe:\n%s\n", pid, data);
+		printf("Child Process1 finish.\n\n");
 		exit(0);
+	} 
+	waitpid(pid1);
 
-	}else{ // 父进程
-	  close(filedes[1]); // 关闭写端
-		n = read(filedes[0], data, MAXLEN);
-		printf("father pid %d, get from pipe:\n%s\n", pid, data);
+	if((pid2 = fork()) < 0){
+	  printf("fork error\n");
+		exit(1);
+	}
+	if(pid2 == 0){
+		printf("Child Process 2 begin.\nPut in Pipe: Child Process 2 is sending a message!\n");
+	  strcpy(data, "Child Process 2 is sending a message!\n");
+    close(filedes[0]);
+		write(filedes[1], data, strlen(data));
+		printf("Child Process 2 finish.\n\n");
 		exit(0);
 	}
+	waitpid(pid2);
+	// 父进程
+	close(filedes[1]); // 关闭写端
+	n = read(filedes[0], data, MAXLEN);
+	printf("Father get from pipe:\n%s",data);
   return 0;
 }
