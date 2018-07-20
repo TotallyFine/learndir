@@ -1,0 +1,21 @@
+<parameters>
+<memory>16G</memory> <!--索引可用的内存大小-->
+<index>path/to/index</index> <!--建立完索引之后，这些索引结果文件存放的位置， 如 /home/xxx/myindex-->
+<stemmer>
+				<name>krovetz</name> <!--词干化工具，也即分词，这个是默认的，也可以选择其他的-->
+</stemmer>
+<corpus>
+				<path>path/to/original/file/directory/</path> <!--原始需要建立索引的文件目录，最后要有/-->
+				<class>trectext</class> <!--需要建立什么格式的索引，有xml txt trectext web-->
+</corpus>
+
+<field>
+				<name>DOCNO</name> <!--文本ID号-->
+</field>
+
+<field> <!--如果需要用到时间信息，需加此field-->
+				<name>date</name>
+				<numeric>true</numeric>
+				<parserName>DateFieldAnnotator</parserName> <!--时间在原文档中的标签名是什么-->
+</field>
+</parameters>

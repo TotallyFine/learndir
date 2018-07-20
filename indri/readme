@@ -1,0 +1,26 @@
+## Indri使用方法
+这里使用的是Indri-5.13.安装方法参见网上。
+### 建立索引
+[Indri建立索引](www.jianshu.com/p/43fade961713)
+1 进入IndriBuildIndex所在目录，在<安装目录>/buildindex/
+2 输入./IndriBuildIndex <index_parmeter_file>即可为语料建立索引，其中index_parameter_file是参数文件。
+3 索引保存在index目录中为一系列二进制文件。如果对文件已经建立索引则再次执行命令不会再次生成文件。
+### 检索
+1 进入IndriRunQuery所在目录，在<安装目录>/runquery/
+2 执行./IndriRunQuery <path-to-query_parameter_file> path-to-query_result_file.
+3 结果可以保存为可执行TREC格式，格式为：<queryID> Q0 <DocID> <rank> <score> <runID>。如 150 Q0 AP890101-0001 1 -4.83646 runName
+参考[IndriRunQuery](https://sourceforge.net/p/lemur/wiki/IndriRunQuery/)
+### 评价
+TREC提供两种评价工具包，java实现的ireval.jar c++实现的trec+eval。
+
+使用ireval.jar
+1 首先，可能需要修改ireval.jar的menifest文件才可以执行
+2 进入ireval.jar的目录，输入java -jar /home/path-to-ireval.jar path-to-query_result_file path-to-qrel_file
+
+使用trec_eval
+1 首先去[下载](trec.nist.gov/trec_eval/trec_eval_latest.tar.gz)trec_eval，然后进行编译，直接在目录下make即可
+2 trec_eval -q path-to-qrel-file path-to-query-result-file > eval_output
+
+### 建立索引时的参数文件
+[IndriBuildIndex Parameters ](https://sourceforge.net/p/lemur/wiki/IndriBuildIndex%20Parameters/)
+[搜索引擎Indri系列：检索 (Retrieval)](https://www.jianshu.com/p/bbb2bafb548c)

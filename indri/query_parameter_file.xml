@@ -1,0 +1,58 @@
+<parameters>
+<index>path1/to/index</index> <!--建立索引时生成的index仓库-->
+<index>path2/to/index</index>
+<rule>method:dirichlet,mu:1000</rule> <!--检索时的方法，这个是狄里可雷方法，参数值1000-->
+<count>1000</count> <!--每个查询值返回1000条记录，可以自己设置-->
+
+<query>
+<number>001</number> <!--编号自己定义-->
+<!--如果文本的发布日期在两个时间段之间，则在其文本中查询"Abbotsford Arts Centre，根据检索时的算法（上面指定的算法）计算query phrases（下面指定的文字）与文本的相关度值"-->
+<text>#scoreif(#datebetween(10/05/2011 01/26/2012) #1(Abbotsford Arts Centre))</text>
+</query>
+
+<query> <!--第二个查询-->
+<number>003</number>
+<text>#scoreif(#datebetween(10/05/2011 08/08/2012) #1(Andy Billig))</text>
+</query>
+
+<stopper>
+				<word>stopword1</word>
+				<word>stopword2</word><!--将所有的停用词都列出来-->
+</stopper>
+
+<trecFormat>true</trecFormat>
+<queryOffset>1</QueryOffset>
+<runID>query_id</runID> <!--自定义ID-->
+</parameters>
+
+<!--
+在查询的时候是依据<text>中的内容进行查询的，称为查询语言，主要分为以下四点
+1 联合查询 Commbining Beliefs
+可以使用#combine如<text>#combine(#1(aaaa) #1(bbbb))</text>就可以查询到同时有aaa和bbb的文档了,或者是#combine(aaa bbb)
+还有如#not #max #band这个是boolean and的意思
+#weight不同的关键字按照不同的权重来查询，如<text>#weight(1#1(aaa) 0.5#1(bbb) 0.5#1(ccc))</text>其中aaa的权重最大，bbb和ccc的权重都为0.5
+2 筛选操作
+<text>#socreif(#datebetween(10/05/2001 01/26/2012 #1(aaa)))</text>使用scoreif会先筛选出符合条件的即#date... 然后根据关键词进行查找。
+3 数字域操作
+#less(F N)匹配在数字域F中的小于N的文档
+#greater(F, N)同上
+#between(F N-low N_high)
+#equals(F N)
+4 时间操作
+#dateafter(D)
+#datebefore(D)
+#datebetween(D_low D_high)
+#dataequals(D)
+
+除了a-z A-Z 0-9 空格 其余字符如$%^&都为非法字符
+-->
+
+<!--
+关于检索的结果
+如果在query parameter文件中指定了<trecFormat>true</trecFormat>,则生成的检索结果格式如下：
+<queryID> Q0 <DocID> <rank> <score> <runID>
+<queryID>在queryParameter中指定的检索的ID<query><number>queryID</number></query>
+<DocID>在文档内部标明的ID
+<rank>检索结果排名
+<runID>在queryParameter中指定的本次运行的ID
+-->
